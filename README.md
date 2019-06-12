@@ -12,4 +12,6 @@ https://www.pedelecforum.de/forum/index.php?threads/open-source-panasonic-flyer-
 The setup.h goes into the PanasonicDrive.ino folder
 The panasonicDrive.h is for both Arduinos
 
+GNU General Public License v3.0
+
 ideas welcome :-)
