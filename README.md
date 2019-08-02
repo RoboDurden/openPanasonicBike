@@ -11,6 +11,8 @@ https://www.pedelecforum.de/forum/index.php?threads/open-source-panasonic-flyer-
 
 The panasonicDrive.h is for both Arduinos and needs an absolute path or to be put in intol libraires/panasonicDrive/
 
+twi.c and twi.h from the Arduino Wire library at Arduino\hardware\arduino\avr\libraries\Wire\src needs to be modified as the Arduino IDE programers were so stupid to omit timeouts.
+
 GNU General Public License v3.0
 
 ideas welcome :-)
