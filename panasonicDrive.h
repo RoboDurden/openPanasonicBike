@@ -33,7 +33,7 @@ Data_Client oC;
 #define BUTTON_ON 2
 #define SPEED_25 4
 
-typedef struct __attribute((__packed__)) Data_Server {
+/* typedef struct __attribute((__packed__)) Data_Server {
 	byte iCmd = 0;
 	float fTorque = 0;
 	float fStop = 0;
@@ -47,6 +47,37 @@ typedef struct __attribute((__packed__)) Data_Server {
 	float fT = 0;
 	float fH = 0;
          } ;
+*/
+typedef struct __attribute((__packed__)) Data_Server {
+	byte iCmd;
+	float fTorque;
+	float fStop;
+	byte iTorqueMaxDown;
+	byte iTorqueMaxUp;
+	int iSpeed;
+	float fBattV;
+	float fBattI;
+	float fSpeedBike;
+	byte wData;
+	float fTrip;
+	float fTripDay;
+         } ;
+
+InitDataServer(Data_Server& o)
+{
+	o.iCmd = o.fTorque = o.fStop = o.iTorqueMaxDown = o.iTorqueMaxUp = o.iSpeed = o.fBattV = o.fBattI = o.fSpeedBike = o.fTrip = o.fTripDay = 0;
+	o.wData = SPEED_25;
+}
+
+PrintDataServer(String s, Data_Server& oS, boolean bNewLine=true)
+{
+  Serial.print(s+": ");Serial.print(oS.fTorque);Serial.print("  stop: ");Serial.print(oS.fStop);
+  Serial.print("  speed: ");Serial.print(oS.iSpeed);
+  Serial.print("\tBattV: ");Serial.print(oS.fBattV);Serial.print("\tBattI: ");Serial.print(oS.fBattI);
+  Serial.print("\tv: ");Serial.print(oS.fSpeedBike);Serial.print("kmh\twData: ");Serial.print(oS.wData);
+  Serial.print("\tfTrip: ");Serial.print(oS.fTrip);Serial.print("\tfTripDay: ");Serial.print(oS.fTripDay);
+  if (bNewLine) Serial.println();
+}
 
 typedef struct __attribute((__packed__)) Data_Server2 {
 	byte iCmd = 0;
@@ -54,7 +85,7 @@ typedef struct __attribute((__packed__)) Data_Server2 {
          } ;
 
 
-Data_Server oS;
+Data_Server oS __attribute__ ((section (".noinit")));
 Data_Server2 oS2;
 
 //CRC-8 - based on the CRC8 formulas by Dallas/Maxim
@@ -132,3 +163,21 @@ template <typename C,typename S, typename I> bool SerialRead(C& oSerial,S& o, I 
 }
 
 
+double mapf(double val, double in_min, double in_max, double out_min, double out_max, boolean bLimit=false) {
+    double f = (val - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+    if (!bLimit) return f;
+    if (f > out_max) f = out_max;
+    if (f < out_min) f = out_min;
+    return f;
+}
+
+#define CLAMP(v,vMin,vMax)  if (v > vMax)  v = vMax;  if (v < vMin)  v = vMin;
+
+
+#ifdef _DEBUG_
+  #define DEBUG(txt, val) Serial.print(txt); Serial.print(": "); Serial.print(val); Serial.print("\t"); 
+  #define DEBUGLN(txt, val) Serial.print(txt); Serial.print(": "); Serial.println(val)
+#else
+  #define DEBUG(txt, val)
+  #define DEBUGLN(txt, val)
+#endif
