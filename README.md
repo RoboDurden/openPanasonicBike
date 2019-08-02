@@ -9,8 +9,7 @@ watch: https://www.youtube.com/watch?v=UOGolEJIfsc
 read: 
 https://www.pedelecforum.de/forum/index.php?threads/open-source-panasonic-flyer-ebike-pedelec-controller.63354/
 
-The setup.h goes into the PanasonicDrive.ino folder
-The panasonicDrive.h is for both Arduinos
+The panasonicDrive.h is for both Arduinos and needs an absolute path or to be put in intol libraires/panasonicDrive/
 
 GNU General Public License v3.0
 
